@@ -13,28 +13,63 @@ Objetivos: Configurar entorno local, entender estructura, preparar herramientas
 
 #### Backend Setup
 - [ ] Investigar: ¿Qué es un virtual environment en Python? ¿Por qué es importante?
-  - *Tarea*: Crear un virtual environment en `BackEnd/` usando `venv`
-  - Verifica que `python -m venv` funciona en tu SO
+  - Hint: Aislamiento de dependencias, reproducibilidad, no contaminar el sistema global
+
+- [ ] Investigar: ¿Qué es `uv` y cómo es mejor que `venv` tradicional?
+  - Busca: astral-sh/uv en GitHub
+  - Comprende: Es 10-100x más rápido, crea `uv.lock` para reproducibilidad
+  - Investigar: ¿Cuál es la diferencia entre `requirements.txt` y `uv.lock`?
+
+- [ ] Instalar `uv` en tu SO
+  - En Linux/Mac: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - En Windows: Descarga desde https://github.com/astral-sh/uv
+  - Verifica: `uv --version`
+
+- [ ] Crear virtual environment con `uv` en `BackEnd/`
+  - *Tarea*: `uv venv` (crea venv en `.venv/` automáticamente)
+  - Verificar que se creó carpeta `.venv`
+
+- [ ] Activar el virtual environment
+  - Linux/Mac: `source .venv/bin/activate`
+  - Windows: `.venv\Scripts\activate`
+  - Verifica que el prompt cambia (debe mostrar `(.venv)`)
 
 - [ ] Investigar: ¿Qué es `requirements.txt` y cómo gestiona dependencias?
-  - *Tarea*: Crear `BackEnd/requirements.txt` con las dependencias iniciales necesarias:
-    - `fastapi`
-    - `uvicorn`
-    - `sqlalchemy`
-    - `psycopg2-binary` (para PostgreSQL)
-    - `python-dotenv` (para variables de entorno)
-    - `pyjwt` (para JWT)
-    - `python-multipart`
-    - `email-validator`
+  - Hint: Lista de paquetes + versiones específicas para reproducibilidad
 
-- [ ] Instalar todas las dependencias en el virtual environment
-  - Verifica que `pip list` muestra los paquetes
+- [ ] Crear `BackEnd/requirements.txt` con dependencias iniciales:
+  - `fastapi==0.104.1`
+  - `uvicorn==0.24.0`
+  - `sqlalchemy==2.0.23`
+  - `psycopg2-binary==2.9.9` (para PostgreSQL)
+  - `python-dotenv==1.0.0` (para variables de entorno)
+  - `pyjwt==2.8.1` (para JWT)
+  - `python-multipart==0.0.6`
+  - `email-validator==2.1.0`
+  - Investigar: ¿Por qué especificar versiones exactas?
+
+- [ ] Instalar dependencias con `uv`
+  - *Tarea*: `uv pip install -r requirements.txt`
+  - Verifica que se creó `uv.lock` (es automático)
+  - Verifica con: `uv pip list`
 
 - [ ] Crear archivo `.env` en `BackEnd/` para variables de entorno (NO commitear)
-  - Estructura inicial: `DATABASE_URL`, `SECRET_KEY`, `EMAIL_USER`, `EMAIL_PASSWORD`
-  - Crear `.gitignore` si no existe (incluir `.env`, `venv/`, `__pycache__/`)
+  - Estructura inicial:
+    ```
+    DATABASE_URL=sqlite:///./test.db
+    SECRET_KEY=tu-clave-secreta-aqui-cambiar-en-produccion
+    EMAIL_USER=tu-email@gmail.com
+    EMAIL_PASSWORD=tu-app-password
+    ```
+  - Investigar: ¿Cómo generar `SECRET_KEY` seguro?
+
+- [ ] Actualizar `.gitignore` en raíz del proyecto
+  - Agregar: `.env`, `.venv/`, `__pycache__/`, `*.pyc`, `*.pyo`
+  - Verificar que existe (si no, créalo)
+  - Investigar: ¿Por qué commitear `uv.lock` pero NO `.env`?
 
 - [ ] Investigar: ¿Qué son las variables de entorno y por qué no debes commitear `.env`?
+  - Hint: Seguridad, credenciales, configuración por ambiente
 
 #### Frontend Setup
 - [ ] Investigar: ¿Qué es `package-lock.json`? ¿Por qué hace falta?
